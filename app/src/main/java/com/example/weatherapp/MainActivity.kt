@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         errorButton = findViewById(R.id.btError)
         errorButton.setOnClickListener {
             city = "10001"
-            requestAPI()
+            display()
         }
 
         //zip interface
@@ -60,17 +60,17 @@ class MainActivity : AppCompatActivity() {
         buttonZip = findViewById(R.id.button)
         buttonZip.setOnClickListener {
             city = editTextZip.text.toString()
-            requestAPI()
+            display()
             editTextZip.text.clear()
             // hide zip interface
             rlZip.isVisible = false
         }
 
-        requestAPI()
+        display()
     }
 
     // function to invoke the right fun to loading or fetch data and update data or show error
-    private fun requestAPI(){
+    private fun display(){
         //println("CITY: $city")
         CoroutineScope(IO).launch {
             //loading
@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
                 fetchWeatherData()
             }.await()
             if(data.isNotEmpty()){
-                updateWeatherData(data)
+                weatherData(data)
                 updateInterface(0)
             }else{
                 //show error
@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     //fill data
-    private suspend fun updateWeatherData(result: String){
+    private suspend fun weatherData(result: String){
         withContext(Main){
             //GET data
             val jsonObj = JSONObject(result)
@@ -154,7 +154,7 @@ class MainActivity : AppCompatActivity() {
             tvHumidity.text = humidity
             //refresh data
             llRefresh=findViewById<LinearLayout>(R.id.llRefresh)
-            llRefresh.setOnClickListener { requestAPI() }
+            llRefresh.setOnClickListener { display() }
             //switch between Celsius and Fahrenheit
             tvtemp.setOnClickListener {
                 if(c) {
