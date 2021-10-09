@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     private var city = "10001"
     // API document Link https://openweathermap.org/current#zip
     // API key
-    private val API = "2cda96c02772796298fcbdb1300c4614"
+    private var API = "2*da96*02772796298f*bdb1300*4614" //replcement
     // UI element
     private lateinit var errorButton: Button
     private lateinit var rlZip: RelativeLayout
@@ -47,6 +47,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        //replace key
+        val re = "[^A-Za-z0-9 ]".toRegex()
+        API = re.replace(API, "c")
+
         // if somthing wrong
         errorButton = findViewById(R.id.btError)
         errorButton.setOnClickListener {
@@ -182,6 +186,7 @@ class MainActivity : AppCompatActivity() {
     }
     //fetch data from API
     private fun fetchWeatherData(): String{
+       // API= API.replace('c','x', true)
         var response = ""
         try {
             response = URL("https://api.openweathermap.org/data/2.5/weather?zip=$city&units=metric&appid=$API")
